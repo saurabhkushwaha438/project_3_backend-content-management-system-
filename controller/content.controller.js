@@ -91,7 +91,6 @@ export const updateContent = async (req, res, next) => {
     const { contentId } = req.params;
     const { title, body, status, tags } = req.body;
 
-    // 1️⃣ Find content
     const content = await Content.findById(contentId);
 
     if (!content) {
@@ -100,20 +99,17 @@ export const updateContent = async (req, res, next) => {
       throw err;
     }
 
-    // 2️⃣ Ownership check
     if (content.userId.toString() !== req.user.id) {
       const err = new Error("Not authorized to update this content");
       err.statusCode = 403;
       throw err;
     }
 
-    // 3️⃣ Update text fields (PATCH = partial update)
     if (title) content.title = title;
     if (body) content.body = body;
     if (status) content.status = status;
     if (tags) content.tags = tags.split(",");
 
-    // 4️⃣ If new image uploaded → upload to Cloudinary
     if (req.file) {
       const uploadResult = await cloudinary.uploader.upload(
         `data:${req.file.mimetype};base64,${req.file.buffer.toString("base64")}`,
@@ -123,7 +119,6 @@ export const updateContent = async (req, res, next) => {
       content.imgUrl = uploadResult.secure_url;
     }
 
-    // 5️⃣ Save updated content
     await content.save();
 
     res.status(200).json({

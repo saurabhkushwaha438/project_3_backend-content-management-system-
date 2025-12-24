@@ -10,7 +10,7 @@ const app = express();
 app.use(express.json());
 
 app.get('/',(req,res)=>{    
-    res.send('hello motherfucker')
+    res.send('You are here means everything is working right')
 })
 app.use('/api/auth',authRouter);
 app.use('/api/content',contentRouter);
