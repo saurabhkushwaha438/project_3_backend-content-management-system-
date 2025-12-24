@@ -48,7 +48,7 @@ export const deleteContent = async(req,res,next)=>{
 }
 export const createContent = async (req, res, next) => {
   try {
-    const { title, body, tags } = req.body;
+    const { title, body, tags,status } = req.body;
 
     if (!title || !body) {
       const err = new Error("Title and body are required");
@@ -74,7 +74,7 @@ export const createContent = async (req, res, next) => {
       body,
       imgUrl,
       tags,
-      status: "draft"
+      status
     });
 
     res.status(201).json({

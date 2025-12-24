@@ -1,5 +1,4 @@
-import dotenv from "dotenv";
-dotenv.config();
+import "dotenv/config"; 
 import express from "express";
 
 import mongodb from "./db/configDB.js";
@@ -17,7 +16,8 @@ app.use('/api/auth',authRouter);
 app.use('/api/content',contentRouter);
 app.use('/api/user',userRouter);
 app.use(errorhandler);
-app.listen(process.env.PORT,async()=>{
-    console.log(`server is listening at ${process.env.PORT}`);
+const PORT = process.env.PORT||3000;
+app.listen(PORT,async()=>{
+    console.log(`server is listening at ${PORT}`);
     await mongodb();
 })
